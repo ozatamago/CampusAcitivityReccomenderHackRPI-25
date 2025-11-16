@@ -3,6 +3,8 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 export default function SignUp() {
   const { setUserId } = useAuth();
@@ -16,7 +18,9 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleSignUpChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setSignUpData((prev) => ({
       ...prev,
@@ -37,31 +41,25 @@ export default function SignUp() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: signUpData.email,
-          name: signUpData.name,
-          year: signUpData.year,
-          major: signUpData.major,
-        }),
+      const response = await axios.post(`${BACKEND_URL}/api/users`, {
+        email: signUpData.email,
+        name: signUpData.name,
+        year: signUpData.year,
+        major: signUpData.major,
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to create user");
-      }
-
-      const userData = await response.json();
-      
+      const userData = await response.data;
+      console.log("User created successfully:", userData);
       // Auto-login the newly created user
       setUserId(userData.user_id);
       navigate("/", { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      console.error("Error creating user:", err);
+      if (axios.isAxiosError(err)) {
+        console.error("Response:", err.response?.data);
+        setError(err.response?.data?.error || err.message);
+      } else {
+        setError(err instanceof Error ? err.message : "An error occurred");
+      }
       setLoading(false);
     }
   };

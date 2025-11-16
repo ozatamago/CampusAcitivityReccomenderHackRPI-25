@@ -79,6 +79,7 @@ def create_user():
         }), 201
     except Exception as e:
         db.session.rollback()
+        print(f"Error creating user: {str(e)}")
         current_app.logger.error(f"Error creating user: {str(e)}")
         return jsonify({"error": "Failed to create user"}), 500
 
