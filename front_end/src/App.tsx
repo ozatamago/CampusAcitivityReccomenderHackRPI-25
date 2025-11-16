@@ -3,6 +3,7 @@ import Navigation from "./components/Navigation";
 // Placeholder components for pages
 import Discover from "./pages/Discover";
 import Matches from "./pages/Matches";
+import EventCreation from "./pages/EventCreation";
 
 const App: React.FC = () => {
   return (
@@ -14,6 +15,10 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Discover />} />
             <Route path="/matches" element={<Matches />} />
+            <Route
+              path="/create-event"
+              element={<EventCreation domain="rpi.edu" />}
+            />
           </Routes>
         </main>
 

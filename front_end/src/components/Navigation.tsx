@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaCompass, FaHeart, FaUser } from "react-icons/fa"; // Icons for retro navigation
+import { FaCompass, FaHeart, FaPlus } from "react-icons/fa"; // Icons for retro navigation
 
 const Navigation: React.FC = () => {
   const location = useLocation();
@@ -8,6 +8,7 @@ const Navigation: React.FC = () => {
   const navItems = [
     { path: "/", icon: FaCompass, label: "Discover" },
     { path: "/matches", icon: FaHeart, label: "Saved" },
+    { path: "/create-event", icon: FaPlus, label: "Create Event" },
   ];
 
   return (

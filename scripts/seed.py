@@ -111,6 +111,7 @@ def seed():
                 location="Music Hall Studio 3",
             ),
             Club(
+                id=67,
                 name="Recreational Soccer Club",
                 description=(
                     "Casual soccer games twice a week, open to all skill levels. "
